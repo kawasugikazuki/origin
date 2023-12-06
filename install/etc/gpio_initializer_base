@@ -1,0 +1,12 @@
+[Unit]
+Description=Initialize using GPIO at OS startup and termitates
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart
+ExecStop
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=Run Red2.0 program automatically
+Wants = network-online.target
+After = network-online.target
+
+[Service]
+ExecStart
+Restart = on-failure
+Type = simple
+Environment = PYTHONUNBUFFERED=1
+User = root
+RestartSec = 5s
+
+[Install]
+WantedBy = multi-user.target
