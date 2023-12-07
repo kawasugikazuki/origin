@@ -44,6 +44,8 @@ class SatoAlgorithm:
         self.__current_distance_from_center_at_rejected = 0.0
         self.__azimuth_to_center = 0.0
         self.__azimuth_to_center_at_rejected = 0.0
+        self.__x = 0.0
+        self.__y = 0.0
         self.__previous_transit_time = 0.0
         self.__is_moved_backward = False
         self.__is_accepted = True
@@ -185,9 +187,11 @@ class SatoAlgorithm:
             print('Detect marker')
             marker_color = self.__explore_parameters.marker_color
             height_correction_flag = self.__explore_parameters.height_correction
-            distance, azimuth = self.__center_finder.getRTheta(self.__image_num, marker_color, self.gyroscope.angles, virtualmarkerxcoord=self.__explore_parameters.virtualmarkerxcoord,virtualmarkerycoord=self.__explore_parameters.virtualmarkerycoord, shutter_speed=self.__explore_parameters.shutter_speed, betweenmarker=self.__explore_parameters.between_markers)
+            distance, azimuth,x,y = self.__center_finder.getRTheta(self.__image_num, marker_color, self.gyroscope.angles, virtualmarkerxcoord=self.__explore_parameters.virtualmarkerxcoord,virtualmarkerycoord=self.__explore_parameters.virtualmarkerycoord, shutter_speed=self.__explore_parameters.shutter_speed, betweenmarker=self.__explore_parameters.between_markers)
             self.__current_distance_from_center = distance
             self.__azimuth_to_center = azimuth
+            self.__x = x
+            self.__y = y
             self.__image_num += 1
             self.__marker_num = len(distance) #マーカが１つか２つか要素数で判断
             self.__is_moved_backward = False

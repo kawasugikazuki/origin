@@ -22,7 +22,7 @@ class LEDCenterFinder() :
 
     # Calculate the distance and angle to the marker
     def __calc_distance_and_phi(self) :
-        self.__distance, self.__azimuth_angle= self.calculator.main(self.__marker_detection_img, self.MARKER_FREQ, self.virtualmarkerxcoord, self.virtualmarkerycoord, self.betweenmarker, self.GYRO_ANGLES)
+        self.__distance, self.__azimuth_angle,self.__x,self.__y= self.calculator.main(self.__marker_detection_img, self.MARKER_FREQ, self.virtualmarkerxcoord, self.virtualmarkerycoord, self.betweenmarker, self.GYRO_ANGLES)
 
     # Return distance[m] and angle(phi)[deg]
     def getRTheta(self, VIDEO_NAME : int, MARKER_FREQ : str, GYRO_ANGLES, virtualmarkerxcoord = 0, virtualmarkerycoord = 0, shutter_speed=100, betweenmarker=0.8) :
@@ -41,7 +41,9 @@ class LEDCenterFinder() :
 
         self.__distance = list((self.__distance.reshape(-1)))
         self.__azimuth_angle = list(np.rad2deg(self.__azimuth_angle).reshape(-1))
-        return self.__distance, self.__azimuth_angle
+        self.__x = list((self.__x.reshape(-1)))
+        self.__y = list((self.__y.reshape(-1)))
+        return self.__distance, self.__azimuth_angle,self.__x,self.__y
 
 if __name__ == '__main__' :
     x = LEDCenterFinder()

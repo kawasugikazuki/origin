@@ -231,7 +231,7 @@ class Calc():
         #print('x[cm] : ' + str(robot_point[0]) + '\ty[cm] : ' + str(robot_point[1]))
         #print('ロボットまでの距離 : ' + str(robot_point_ans[0]) + '[cm]')
         #print('ロボットまでの方位角 : ' + str(np.rad2deg(robot_point_ans[1])) + '[deg]')
-        return marker_point_ans
+        return marker_point_ans, robot_point
 
     ## Estimate the distance and azimuth from the virtual marker
     # @brief Estimates distance and azimuth from a virtual marker using the coordinate values in the robot coordinate system of two markers mounted on one post
@@ -242,8 +242,10 @@ class Calc():
     def __get_distance_phi_virtual(self, distance, phi, vmarker) :
         point = np.array([distance, phi])
         point = self.__polar2cartesian(point)
-        r, phi = self.__getTfArray_virtual_robot(point, vmarker)
-        return r, phi
+        marker_point_ans, robot_point = self.__getTfArray_virtual_robot(point, vmarker)
+        r, phi =marker_point_ans[0], marker_point_ans[1]
+        x,y=robot_point[0],robot_point[1]
+        return r, phi,x,y
 
     ## This function estimates the distance and azimuth from a marker detection image
     # @brief The function estimates the distance and azimuth from the marker using the calibration parameters, using the marker detection image and frequency as arguments
@@ -270,10 +272,24 @@ class Calc():
             phi = np.empty(shape=(0, 1))
             distance = np.append(distance, tmp[0])
             phi = np.append(phi, tmp[1])
+            x=np.empty(shape=(0, 1))
+            y=np.empty(shape=(0, 1))
+            x=np.append(x,tmp[2])
+            y=np.append(y,tmp[3])
 
         distance = (distance.reshape(1, 1))*0.01
         phi = phi.reshape(1, 1)
-        return distance, phi
+        if len(marker_freq) == 2 :
+            x=x.reshape(1,1)
+            y=y.reshape(1,1)
+        if len(marker_freq) == 1 :
+            x=0
+            y=0
+        print('--- x ---')
+        print(x)
+        print('--- y ---')
+        print(y)
+        return distance, phi,x,y
 
 if __name__ == '__main__' :
     x = Calc()
